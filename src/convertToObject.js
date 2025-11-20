@@ -7,32 +7,30 @@
  */
 function convertToObject(sourceString) {
   // write your code here
-  const obj = {};
   const lines = sourceString.split(';');
 
-  for (let line of lines) {
-    line = line.trim();
+  const styleObject = lines.reduce((acc, line) => {
+    const trimmedLine = line.trim();
 
-    if (!line) {
-      continue;
+    if (!trimmedLine) {
+      return acc;
     }
 
-    const index = line.lastIndexOf(':');
+    const index = trimmedLine.lastIndexOf(':');
 
     if (index === -1) {
-      continue;
+      return acc;
     }
 
-    const key = line.slice(0, index).trim();
-    let value = line.slice(index + 1).trim();
+    const key = trimmedLine.slice(0, index).trim();
+    const value = trimmedLine.slice(index + 1).trim();
 
-    if (value.endsWith(';')) {
-      value = value.slice(0, -1).trim();
-    }
-    obj[key] = value;
-  }
+    acc[key] = value;
 
-  return obj;
+    return acc;
+  }, {});
+
+  return styleObject;
 }
 
 module.exports = convertToObject;
